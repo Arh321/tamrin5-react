@@ -11,7 +11,7 @@ export const EditeForm = () =>{
     const [contact,setContact] = useState()
     const [isValid,setIsValid] = useState(true)
     const [isnumber,setIsnumber] = useState (true)
-    const [isName,setIsName] = useState(false)
+    const [isName,setIsName] = useState(true)
     const [errorEdit,setErrorEdit] = useState('')
     const [isLoading , setIsLoading] = useState(false)
     const param = useParams();
@@ -109,34 +109,39 @@ export const EditeForm = () =>{
 
     return(
         <>
-        <div className={clsx("w-full h-screen flex justify-center items-center bg-stone-800 ",{'blur-sm':isLoading===true})}>
-            <div ref={loading} className="w-1/4 h-2/5 flex flex-col gap-2 p-7 bg-neutral-600 rounded-md">
-
-                <label className="text-4xl text-gray-300 font-semibold font-mono" htmlFor="name">Name</label>
-                <input 
-                className={clsx("p-4 bg-transparent border-2  rounded-full border-gray-400 text-2xl  focus:outline-0",
-                {'focus:border-green-500':isName===true},
-                {'focus:border-red-500':isName===false},
-                {'border-black': name.length == 0}
-                )}
-                 value={name} onKeyDown={(e) => handleEnterKey(e)} onChange={handleName} type="text" placeholder="Your name..."/>
-                {isName == true ? <span className="text-2xl text-green-500">Ok!</span> : <span className="text-2xl text-red-500">0Not Ok!</span>}
-                <label className="mt-4 text-4xl text-gray-300  font-mono font-semibold" htmlFor="number">Number</label>
-                <input className={clsx("p-4 bg-transparent border-2 text-gray-300  rounded-full border-gray-400 text-2xl  focus:outline-0",
-                {'focus:border-green-700':isnumber===true},
-                {'focus:border-red-700':isnumber===false},
-                {'border-gray-400': number.length == 0}
-                )} 
-                value={number} onKeyDown={(e) => handleEnterKey(e)} onChange={handleNumber} type="text" placeholder="Your number..."/>
-                {isnumber == true ? <span className="text-2xl text-green-500">Ok!</span> : <span className="text-2xl text-red-500">Not Ok!</span>}
-                
-                <button className="w-1/3 py-3 m-auto mt-6 text-2xl rounded-full flex justify-center bg-blue-600 text-white" 
-                type="submit" onClick={handlePutContact} disabled = {isValid === false ? true : false}>Edit</button>
-                <span className="m-auto text-red-700">{errorEdit != '' ? errorEdit : ''}</span>
+        <div className={clsx("w-full h-screen flex justify-center items-center bg-zinc-950",{'blur-sm':isLoading===true})}>
+            <div ref={loading} className="w-1/4  flex flex-col gap-2 p-7 bg-zinc-900 rounded-md">
+                <h1 className="mx-auto text-4xl text-green-600 font-semibold">SIGN IN</h1>
+                <div className="w-full flex flex-col gap-2 py-2">
+                    <label className="text-3xl text-green-500 font-medium" htmlFor="name">Name</label>
+                    <input 
+                    className={clsx("p-4 bg-transparent bg-zinc-800  rounded-md text-gray-400 border border-zinc-800 text-2xl  focus:outline-0",
+                    {'focus:border-green-500':isName===true},
+                    {'focus:border-red-500':isName===false},
+                    {'border-black': name.length == 0}
+                    )}
+                    value={name} onKeyDown={(e) => handleEnterKey(e)} onChange={handleName} type="text" placeholder="Your name..."/>
+                    {isName == true ? <span className="text-xl text-green-600 mt-1">Ok!</span> : <span className="text-xl text-red-600 mt-1">Not Ok!</span>}
+                </div>
+                <div className="w-full flex flex-col gap-2 py-2">
+                    <label className="text-3xl text-green-500 font-medium" htmlFor="number">Number</label>
+                    <input className={clsx("p-4 bg-transparent bg-zinc-800  rounded-md text-gray-400 text-2xl border border-zinc-800  focus:outline-0 ",
+                    {' focus:border-green-500':isnumber===true},
+                    {'focus:border-red-500':isnumber===false},
+                    {'border-black': number.length == 0}
+                    )} 
+                    value={number} onKeyDown={(e) => handleEnterKey(e)} onChange={handleNumber} type="text" placeholder="Your number..."/>
+                    {isnumber == true ? <span className="text-xl text-green-600 mt-1">Ok!</span> : <span className="text-xl text-red-600 mt-1">Not Ok!</span>}
+                </div>
+                <div className="w-full flex">
+                    <button className="w-full py-3 m-auto mt-6 text-2xl rounded flex justify-center bg-green-600 font-medium text-black" 
+                    type="submit" onClick={handlePutContact} disabled = {isValid === false ? true : false}>Edit</button>   
+                </div>
             </div>
             
         </div>
-        {isLoading == true ? <div className="absolute top-1/2 left-1/3 text-6xl">Wait a moment please...</div> : ''}
+        <span className="absolute top-[60%] w-full flex justify-center items-center text-5xl m-auto text-red-800">{errorEdit != '' ? errorEdit : ''}</span>
+        {isLoading == true ? <div className="absolute top-1/2 w-full flex justify-center items-center text-gray-300 text-6xl">Wait a moment please...</div> : ''}
         </>
     )
 }
