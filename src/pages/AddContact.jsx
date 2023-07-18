@@ -2,6 +2,7 @@ import axios from "axios"
 import clsx from "clsx"
 import { useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { FormInput } from "../components/FormInput"
 
 
 export const Addcontact = () =>{
@@ -9,10 +10,11 @@ export const Addcontact = () =>{
     const [number,setNumber] = useState('')
     const [contacts,setContacts] = useState([])
     const [isValid,setIsValid] = useState(false)
-    const [isName,setIsName] = useState(false)
+    const [isName,setIsName] = useState(true)
     const [isnumber,setIsnumber] = useState (false)
     const [errorPost,setErrorPost] = useState('')
     const [isLoading , setIsLoading] = useState(false)
+    const [dublName,setDubleName] = useState(false)
     const navigat = useNavigate()
     const idRef = useRef()
     useEffect(() => {
@@ -41,7 +43,11 @@ export const Addcontact = () =>{
             setIsName(false)
             setIsValid(false)
         }
-    
+        contacts.find((item) => {
+            if(item.name == e.target.value){
+                setDubleName(true)
+            }else setDubleName(false)
+        } )
     }
 
 
@@ -109,29 +115,44 @@ export const Addcontact = () =>{
             
             <div  className="w-1/4  flex flex-col gap-2 p-7 bg-zinc-900 rounded-md">
                 <h1 className="mx-auto text-4xl text-green-600 font-semibold">SIGN IN</h1>
-                <div className="w-full flex flex-col gap-2 py-2">
-                    <label className="text-3xl text-green-500 font-medium" htmlFor="name">Name</label>
-                    <input 
-                    className={clsx("p-4 bg-transparent bg-zinc-800  rounded-md text-gray-400 border border-zinc-800 text-2xl  focus:outline-0",
+                <FormInput 
+                    onChange={handleName}
+                    onkey={handleEnterKey}
+                    type='text'
+                    classNameDiv="w-full flex flex-col gap-2 py-2"
+                    classNameLabel="text-3xl text-green-500 font-medium"
+                    classNameInput={clsx("p-4 bg-transparent bg-zinc-800  rounded-md text-gray-400 border border-zinc-800 text-2xl  focus:outline-0",
                     {'focus:border-green-500':isName===true},
                     {'focus:border-red-500':isName===false},
                     {'border-black': name.length == 0}
                     )}
-                    value={name} onKeyDown={(e) => handleEnterKey(e)} onChange={handleName} type="text" placeholder="Your name..."/>
-                    {isName == true ? <span className="text-xl text-green-600 mt-1">Ok!</span> : <span className="text-xl text-red-600 mt-1">Not Ok!</span>}
+                    value={name}
+                    placeHolder="Your name..."
+                    subject='Name'
+                />
+                <div className="h-[24px]">
+                    {isName == false ? <span className="text-xl text-red-600 mt-1">Not Ok!</span> : ''}
+                    {dublName == false ? <span className="text-xl text-green-500 mt-1 ml-2">availabe name</span> : <span className="text-xl text-red-600 mt-1 ml-2">Not availabe name</span>}
                 </div>
-                
-                <div className="w-full flex flex-col gap-2 py-2">
-                    <label className="text-3xl text-green-500 font-medium" htmlFor="number">Number</label>
-                    <input className={clsx("p-4 bg-transparent bg-zinc-800  rounded-md text-gray-400 text-2xl border border-zinc-800  focus:outline-0 ",
-                    {' focus:border-green-500':isnumber===true},
+                <FormInput 
+                    onChange={handleNumber}
+                    onkey={handleEnterKey}
+                    type='text'
+                    classNameDiv="w-full flex flex-col gap-2 py-2"
+                    classNameLabel="text-3xl text-green-500 font-medium"
+                    classNameInput={clsx("p-4 bg-transparent bg-zinc-800  rounded-md text-gray-400 border border-zinc-800 text-2xl  focus:outline-0",
+                    {'focus:border-green-500':isnumber===true},
                     {'focus:border-red-500':isnumber===false},
                     {'border-black': number.length == 0}
-                    )} 
-                    value={number} onKeyDown={(e) => handleEnterKey(e)} onChange={handleNumber} type="text" placeholder="Your number..."/>
-                    {isnumber == true ? <span className="text-xl text-green-600 mt-1">Ok!</span> : <span className="text-xl text-red-600 mt-1">Not Ok!</span>}
+                    )}
+                    value={number}
+                    placeHolder="Your number..."
+                    subject='Number'
+                />
+                
+                <div className="h-[24px]">
+                {isnumber == false ? <span className="text-xl text-red-600 mt-1">Wrong number or to short (must be at list 10 number)</span> : ''}
                 </div>
-
                 <div className="w-full flex flex-col gap-1 ">
                     <button className="w-full py-3 m-auto mt-6 text-2xl rounded flex justify-center bg-green-600 font-medium text-black" type="submit"  onClick={handlePostContact} disabled = {isValid === false ? true : false}>Submit</button>  
                 </div>
